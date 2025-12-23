@@ -1,0 +1,48 @@
+{
+  "title": "SwiftCart Retail API",
+  "description": "- The backbone of the SwiftCart e-commerce ecosystem.\n-- High-performance order processing.\n-- Multi-vendor support architecture.\n- Integrated with global shipping providers.\n1. Real-time inventory synchronization.\n2. Secure payment gateway via Stripe.",
+  "descriptionFormat": "docgenie",
+  "customTypes": [
+    {
+      "name": "Product",
+      "definition": "{ id: string, name: string, price: number, stock_count(Admin): number, vendor_id(Admin): string }",
+      "roles": ["Admin", "Vendor"]
+    },
+    {
+      "name": "Order",
+      "definition": "{ id: string, items: Product[], total: number, customer_id: string, internal_notes(Staff): string }",
+      "roles": ["Staff"]
+    },
+    {
+      "name": "Customer",
+      "definition": "{ id: string, email: string, loyalty_tier: string, shipping_address: object }",
+      "roles": []
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "e1",
+      "method": "GET",
+      "path": "/products",
+      "description": "Retrieve a list of available products. Stock counts are only visible to administrative staff.",
+      "arguments": "null",
+      "response": "Product[]",
+      "authRules": [
+        { "role": "Guest", "method": "None" },
+        { "role": "Admin", "method": "Token", "details": "Requires X-Admin-Token header" }
+      ]
+    },
+    {
+      "id": "e2",
+      "method": "POST",
+      "path": "/orders",
+      "description": "Place a new order. Standard customers can only view their own orders.",
+      "arguments": "{ items: string[] }",
+      "response": "Order",
+      "authRules": [
+        { "role": "Standard", "method": "Token" },
+        { "role": "Staff", "method": "API Key" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "DocuGenie: Professional API Architect",
+  "description": "A high-performance technical documentation engine that transforms structured text and JSON into interactive API references. Features deep contextual role mapping, custom type cross-linking, and AI-powered technical writing assistance via Gemini.",
+  "version": "1.2.0",
+  "features": [
+    "Hierarchical list parsing (dash & numeric)",
+    "Contextual security role simulations",
+    "Real-time type definition cross-linking",
+    "Gemini AI documentation enhancement",
+    "Full JSON import/export capabilities",
+    "Responsive multi-perspective preview"
+  ],
+  "requestFramePermissions": []
+}

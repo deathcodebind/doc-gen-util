@@ -1,0 +1,46 @@
+{
+  "title": "Lumina IoT Cloud",
+  "description": "- Scalable fleet management for Lumina smart devices.\n- Telemetry data ingestion at sub-millisecond latency.\n-- Support for MQTT and WebSockets.\n-- Edge computing integration.",
+  "descriptionFormat": "docgenie",
+  "customTypes": [
+    {
+      "name": "Device",
+      "definition": "{ mac_address: string, firmware_version: string, status: string, location(Owner): LatLng }",
+      "roles": ["Owner"]
+    },
+    {
+      "name": "Telemetry",
+      "definition": "{ timestamp: number, temperature: number, humidity: number, battery_level: number }",
+      "roles": []
+    },
+    {
+      "name": "LatLng",
+      "definition": "{ lat: number, lng: number }",
+      "roles": []
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "iot-1",
+      "method": "GET",
+      "path": "/v1/devices",
+      "description": "List all devices registered to your account.",
+      "arguments": "null",
+      "response": "Device[]",
+      "authRules": [
+        { "role": "Owner", "method": "API Key", "details": "Device Secret required" }
+      ]
+    },
+    {
+      "id": "iot-2",
+      "method": "POST",
+      "path": "/v1/devices/:id/telemetry",
+      "description": "Post telemetry data from a physical device.",
+      "arguments": "Telemetry",
+      "response": "{ success: boolean }",
+      "authRules": [
+        { "role": "Device", "method": "Signature", "details": "HMAC-SHA256 signature of payload" }
+      ]
+    }
+  ]
+}

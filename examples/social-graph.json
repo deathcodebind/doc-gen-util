@@ -1,0 +1,42 @@
+{
+  "title": "Nova Social Graph",
+  "description": "Nova is a decentralized social graph protocol focusing on privacy and user ownership.\n\n**Key Principles:**\n* User-controlled data vaults.\n* Cryptographically verified relationships.\n* Transparent moderation queues.",
+  "descriptionFormat": "markdown",
+  "customTypes": [
+    {
+      "name": "Profile",
+      "definition": "{ id: string, bio: string, avatar_url: string, followers_count: number, private_email(Moderator): string }",
+      "roles": ["Moderator"]
+    },
+    {
+      "name": "Post",
+      "definition": "{ id: string, content: string, author: Profile, reports(Moderator): number, is_shadow_banned(Moderator): boolean }",
+      "roles": ["Moderator"]
+    }
+  ],
+  "endpoints": [
+    {
+      "id": "nova-p1",
+      "method": "GET",
+      "path": "/profiles/:handle",
+      "description": "Fetch a public profile. Sensitive info is hidden from standard users.",
+      "arguments": "null",
+      "response": "Profile",
+      "authRules": [
+        { "role": "Standard", "method": "None" },
+        { "role": "Moderator", "method": "OAuth2", "details": "Requires 'moderator.read' scope" }
+      ]
+    },
+    {
+      "id": "nova-r1",
+      "method": "POST",
+      "path": "/posts/:id/report",
+      "description": "Submit a report against a post for review.",
+      "arguments": "{ reason: string }",
+      "response": "{ report_id: string }",
+      "authRules": [
+        { "role": "Standard", "method": "Token" }
+      ]
+    }
+  ]
+}
